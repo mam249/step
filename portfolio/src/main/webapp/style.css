@@ -23,3 +23,7 @@
 .image-thumbnails img:hover {
   border: thick solid white;
 }
+
+#cv-header {
+  text-align: center;
+}
