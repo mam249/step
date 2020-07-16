@@ -15,14 +15,19 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function addRandomImage() {
+  const image_numbers = ['1692', '1710', '1740', '1741', '2938', '2940', '5317', '7953', '7954', '7983', '8105', '9292', '9303', '9377', '9378', '9380'];
+
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
+  const image_number = image_numbers[Math.floor(Math.random() * image_numbers.length)];
+  const image_url = "/images/IMG_" + image_number + ".jpg";
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+
+  const image_element = document.createElement('img');
+  image_element.src = image_url;
+
+  const imageContainer = document.getElementById('image-container');
+  imageContainer.innerHTML = '';
+  imageContainer.appendChild(image_element);
 }
