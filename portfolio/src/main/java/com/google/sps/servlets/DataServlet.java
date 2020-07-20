@@ -13,20 +13,39 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+import com.google.sps.servlets.DataServlet;
+
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private ArrayList<String> trial_array;
+  private String json_array;
 
+  @Override
+  public void init() {
+    trial_array = new ArrayList<>();
+    trial_array.add("First hard-coded message");
+    trial_array.add("Second hard-coded message");
+    trial_array.add("Third hard-coded message");
+    json_array = new Gson().toJson(trial_array);
+  }
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
     response.getWriter().println("Hello Mohamed!");
+    response.setContentType("application/json;");
+    response.getWriter().println(json_array);
   }
 }
+
