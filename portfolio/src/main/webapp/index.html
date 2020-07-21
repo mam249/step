@@ -26,9 +26,20 @@
       <button onclick="addRandomImage()">Click Here</button>
       <div id="image-container"></div>
       <hr>
-      <p>Click here to view Messages</p>
-      <button onclick="getRandomMessageUsingAsyncAwait()">Servlet</button>
+      <p>Click here to view the last comment</p>
+      <button onclick="getRandomMessageUsingAsyncAwait()">Comments</button>
       <div id="message-container"></div>
+      <hr>
+      
+      <form action="/data" method="POST">
+        <p>Please leave a comment!:</p>
+        <textarea name="comment-box">Type Comment Here</textarea>
+        <p>Display Name:</p>
+        <textarea name="display-name"></textarea>
+        <input type="checkbox" name="anonymous" value="true"> Anonymous
+        <br/><br/>
+        <input type="submit" />
+      </form>
     </div>
   </body>
 </html>
