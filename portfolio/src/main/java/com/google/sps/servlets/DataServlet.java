@@ -29,6 +29,13 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
+  private ArrayList<String> comments_array;
+  private String json_array;
+
+  @Override
+  public void init() {
+      comments_array = new ArrayList<>();
+  }  
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -47,7 +54,9 @@ public final class DataServlet extends HttpServlet {
 
     // Respond with the result.
     response.setContentType("text/html;");
-    response.getWriter().println(comment + " - " + displayName);
+    comments_array.add(comment + " - " + displayName);
+    json_array = new Gson().toJson(comments_array);
+    response.getWriter().println(json_array);
 
   }
   
