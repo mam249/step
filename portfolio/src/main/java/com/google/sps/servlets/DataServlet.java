@@ -17,6 +17,10 @@ import com.google.sps.servlets.DataServlet;
 
 import com.google.gson.Gson;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,38 +33,32 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
-  private ArrayList<String> comments_array;
-  private String json_array;
-
-  @Override
-  public void init() {
-      comments_array = new ArrayList<>();
-  }  
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      // Get the input from the form.
-    String comment = getParameter(request, "comment-box", "");
-    String displayName = getParameter(request, "display-name", "");
+    String comment = request.getParameter("comment-box");
+    String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
-
+    long timestamp = System.currentTimeMillis();
+    Entity taskEntity = new Entity("Task");
     if (anonymous) {
         displayName = "Anonymous";
     }
-
     if (displayName == ""){
         displayName = "Anonymous";
     }
+    
+    
+    taskEntity.setProperty("comment", comment);
+    taskEntity.setProperty("displayName", displayName);
+    taskEntity.setProperty("timestamp", timestamp);
 
-    // Respond with the result.
-    response.setContentType("text/html;");
-    comments_array.add(comment + " - " + displayName);
-    json_array = new Gson().toJson(comments_array);
-    response.getWriter().println(json_array);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
 
+    response.sendRedirect("/index.html");
+    
   }
-  
-
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     if (value == null) {
@@ -69,4 +67,3 @@ public final class DataServlet extends HttpServlet {
     return value;
   }
 }
-
