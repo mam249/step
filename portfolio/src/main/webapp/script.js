@@ -31,3 +31,10 @@ function addRandomImage() {
   imageContainer.innerHTML = '';
   imageContainer.appendChild(image_element);
 }
+
+// fetching string from servlet
+async function getRandomQuoteUsingAsyncAwait() {
+  const response = await fetch('/data');
+  const quote = await response.text();
+  document.getElementById('quote-container').innerText = quote;
+}
