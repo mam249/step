@@ -48,9 +48,6 @@ public final class DataServlet extends HttpServlet {
     if (anonymous) {
         displayName = "Anonymous";
     }
-    if (displayName == ""){             //not working correctly right now
-        displayName = "Anonymous";
-    }
     
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("comment", comment);
@@ -60,10 +57,17 @@ public final class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(taskEntity);
     response.sendRedirect("/index.html");
-    
+  }
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     ArrayList<Task> tasks = new ArrayList<>();
+    String comment = request.getParameter("comment-box");
+    String displayName = request.getParameter("display-name");
+    boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
+    long timestamp = System.currentTimeMillis();  
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       comment = (String) entity.getProperty("comment");
@@ -74,6 +78,10 @@ public final class DataServlet extends HttpServlet {
       tasks.add(task);
     
     }
+    Gson gson = new Gson();
+
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(tasks));
   }
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {

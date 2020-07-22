@@ -32,15 +32,23 @@ function addRandomImage() {
   imageContainer.appendChild(image_element);
 }
 
-// fetching string from servlet
-async function getRandomQuoteUsingAsyncAwait() {
-  const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('quote-container').innerText = quote;
+function loadTasks() {
+  fetch('/data').then(response => response.json()).then((tasks) => {
+    const taskListElement = document.getElementById('task-list');
+    tasks.forEach((task) => {
+      taskListElement.appendChild(createTaskElement(task));
+    })
+  });
 }
 
-async function getRandomMessageUsingAsyncAwait() {
-  const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('message-container').innerText = quote;
+/** Creates an element that represents a task,*/
+function createTaskElement(task) {
+  const taskElement = document.createElement('li');
+  taskElement.className = 'task';
+
+  const titleElement = document.createElement('span');
+  titleElement.innerText = task.comment + ' - Commented by ' + task.displayName;
+
+  taskElement.appendChild(titleElement);
+  return taskElement;
 }
