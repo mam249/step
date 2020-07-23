@@ -48,10 +48,6 @@ public final class DataServlet extends HttpServlet {
     if (anonymous) {
         displayName = "Anonymous";
     }
-    if (displayName == ""){             //not working correctly right now
-        displayName = "Anonymous";
-    }
-    
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("comment", comment);
     taskEntity.setProperty("displayName", displayName);
