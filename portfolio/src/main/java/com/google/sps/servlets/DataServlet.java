@@ -16,6 +16,14 @@ package com.google.sps.servlets;
 import com.google.sps.servlets.DataServlet;
 
 import com.google.gson.Gson;
+import com.google.sps.data.Task;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -29,33 +37,40 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
-  private ArrayList<String> comments_array;
-  private String json_array;
-
-  @Override
-  public void init() {
-      comments_array = new ArrayList<>();
-  }  
-
+  private ArrayList<Task> tasks;
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      // Get the input from the form.
-    String comment = getParameter(request, "comment-box", "");
-    String displayName = getParameter(request, "display-name", "");
+    String comment = request.getParameter("comment-box");
+    String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
-
-    if (anonymous || displayName == "") {
+    long timestamp = System.currentTimeMillis();    
+    
+    if (anonymous) {
         displayName = "Anonymous";
     }
+    Entity taskEntity = new Entity("Task");
+    taskEntity.setProperty("comment", comment);
+    taskEntity.setProperty("displayName", displayName);
+    taskEntity.setProperty("timestamp", timestamp);
 
-    // Respond with the result.
-    response.setContentType("text/html;");
-    comments_array.add(comment + " - " + displayName);
-    json_array = new Gson().toJson(comments_array);
-    response.getWriter().println(json_array);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
+    response.sendRedirect("/index.html");
+    
+    Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    ArrayList<Task> tasks = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      comment = (String) entity.getProperty("comment");
+      displayName = (String) entity.getProperty("displayName");
+      timestamp = (long) entity.getProperty("timestamp");
 
+      Task task = new Task(id, comment, displayName, timestamp);
+      tasks.add(task);
+    
+    }
   }
-  
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
@@ -64,4 +79,5 @@ public final class DataServlet extends HttpServlet {
     }
     return value;
   }
+  
 }
