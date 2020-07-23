@@ -28,24 +28,40 @@ import java.util.ArrayList;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
-public class DataServlet extends HttpServlet {
-  private ArrayList<String> trial_array;
+public final class DataServlet extends HttpServlet {
+  private ArrayList<String> comments_array;
   private String json_array;
 
   @Override
   public void init() {
-    trial_array = new ArrayList<>();
-    trial_array.add("First hard-coded message");
-    trial_array.add("Second hard-coded message");
-    trial_array.add("Third hard-coded message");
-    json_array = new Gson().toJson(trial_array);
-  }
+      comments_array = new ArrayList<>();
+  }  
+
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      // Get the input from the form.
+    String comment = getParameter(request, "comment-box", "");
+    String displayName = getParameter(request, "display-name", "");
+    boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
+
+    if (anonymous || displayName == "") {
+        displayName = "Anonymous";
+    }
+
+    // Respond with the result.
     response.setContentType("text/html;");
-    response.getWriter().println("Hello Mohamed!");
-    response.setContentType("application/json;");
+    comments_array.add(comment + " - " + displayName);
+    json_array = new Gson().toJson(comments_array);
     response.getWriter().println(json_array);
+
+  }
+  
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
-
