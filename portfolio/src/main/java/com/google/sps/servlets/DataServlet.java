@@ -44,11 +44,7 @@ public final class DataServlet extends HttpServlet {
     String displayName = getParameter(request, "display-name", "");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
 
-    if (anonymous) {
-        displayName = "Anonymous";
-    }
-
-    if (displayName == ""){
+    if (anonymous || displayName == "") {
         displayName = "Anonymous";
     }
 
@@ -69,4 +65,3 @@ public final class DataServlet extends HttpServlet {
     return value;
   }
 }
-
