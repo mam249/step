@@ -16,15 +16,15 @@ package com.google.sps.data;
 
 
 public final class Task {
-    private final long id;
-    private final String comment;
-    private final String displayName;
-    private final long timestamp;
+  private final long id;
+  private final String comment;
+  private final String displayName;
+  private final long timestamp;
 
-    public Task(long id, String comment, String displayName, long timestamp) {
-        this.id = id;
-        this.comment = comment;
-        this.displayName = displayName;
-        this.timestamp = timestamp;
-    }
+  public Task(long id, String comment, String displayName, long timestamp) {
+    this.id = id;
+    this.comment = comment;
+    this.displayName = displayName;
+    this.timestamp = timestamp;
+  }
 }

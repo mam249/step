@@ -77,6 +77,7 @@ public final class DataServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(tasks));
+
   }
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
