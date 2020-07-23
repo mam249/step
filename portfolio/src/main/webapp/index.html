@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body style="background-color:powderblue;">
+  <body style="background-color:powderblue;" onload="loadTasks()">
     <div id="content">
       <h1>My Portfolio</h1>
       <nav>
@@ -26,20 +26,19 @@
       <button onclick="addRandomImage()">Click Here</button>
       <div id="image-container"></div>
       <hr>
-      <p>Click here to view the last comment</p>
-      <button onclick="getRandomMessageUsingAsyncAwait()">Comments</button>
-      <div id="message-container"></div>
-      <hr>
-      
       <form action="/data" method="POST">
         <p>Please leave a comment!:</p>
-        <textarea name="comment-box">Type Comment Here</textarea>
+        <textarea name="comment-box" required> Type Comment Here</textarea>
         <p>Display Name:</p>
-        <textarea name="display-name"></textarea>
+        <textarea name="display-name" required></textarea>
         <input type="checkbox" name="anonymous" value="true"> Anonymous
         <br/><br/>
         <input type="submit" />
       </form>
+      <hr>
+      <p>View Comments Here</p>
+      <ul id="task-list"></ul>
+      <hr>
     </div>
   </body>
 </html>
