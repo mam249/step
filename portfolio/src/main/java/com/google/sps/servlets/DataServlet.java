@@ -29,12 +29,12 @@ import java.util.ArrayList;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
-  private ArrayList<String> comments_array;
-  private String json_array;
+  private ArrayList<String> commentsArray;
+  private String jsonArray;
 
   @Override
   public void init() {
-      comments_array = new ArrayList<>();
+      commentsArray = new ArrayList<>();
   }  
 
   @Override
@@ -44,15 +44,15 @@ public final class DataServlet extends HttpServlet {
     String displayName = getParameter(request, "display-name", "");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
 
-    if (anonymous || displayName == "") {
+    if (anonymous) {
         displayName = "Anonymous";
     }
 
     // Respond with the result.
     response.setContentType("text/html;");
-    comments_array.add(comment + " - " + displayName);
-    json_array = new Gson().toJson(comments_array);
-    response.getWriter().println(json_array);
+    commentsArray.add(comment + " - " + displayName);
+    jsonArray = new Gson().toJson(commentsArray);
+    response.getWriter().println(jsonArray);
 
   }
   
