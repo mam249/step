@@ -24,6 +24,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
+
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +45,17 @@ public final class DataServlet extends HttpServlet {
     String comment = request.getParameter("comment-box");
     String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
-    long timestamp = System.currentTimeMillis();    
+    long timestamp = System.currentTimeMillis();
+    String maxCommentsString = request.getParameter("max-comments");
+    int maxComments = 5;
+    if (maxCommentsString == null){
+        maxComments = 5;
+    } else {
+        maxComments = Integer.parseInt(maxCommentsString);
+    }
+    FetchOptions options = FetchOptions.Builder.withLimit(maxComments);
+
+
     
     if (anonymous) {
         displayName = "Anonymous";
@@ -61,14 +73,22 @@ public final class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+    String maxCommentsString = request.getParameter("max-comments");
+    int maxComments = 5;
+    if (maxCommentsString == null){
+        maxComments = 5;
+    } else {
+        maxComments = Integer.parseInt(maxCommentsString);
+    }
+    FetchOptions options = FetchOptions.Builder.withLimit(maxComments);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     ArrayList<Task> tasks = new ArrayList<>();
     String comment = request.getParameter("comment-box");
     String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
-    long timestamp = System.currentTimeMillis();  
-    for (Entity entity : results.asIterable()) {
+    long timestamp = System.currentTimeMillis();
+    for (Entity entity : results.asIterable(/*options*/)) {
       long id = entity.getKey().getId();
       comment = (String) entity.getProperty("comment");
       displayName = (String) entity.getProperty("displayName");
@@ -76,8 +96,8 @@ public final class DataServlet extends HttpServlet {
 
       Task task = new Task(id, comment, displayName, timestamp);
       tasks.add(task);
-    
     }
+    
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
