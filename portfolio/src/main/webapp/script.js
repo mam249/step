@@ -32,19 +32,22 @@ function addRandomImage() {
   imageContainer.appendChild(image_element);
 }
 
+function commentsSection(){
+    var amount = document.getElementById("max-comments").value;
+    loadTasks(amount);
+}
+
 async function loadTasks(amount) {
-  let maxComments = sessionStorage.getItem("maxComments");
-  if(typeof amount !== 'undefined'){
-        maxComments = amount;
-  }
-  else if(maxComments == null){
-    maxComments = 5;
-  }
+
   fetch('/data').then(response => response.json()).then((tasks) => {
-    const taskListElement = document.getElementById('task-list');
-    tasks.forEach((task) => {
-      taskListElement.appendChild(createTaskElement(task));
-    })
+    taskListElement = document.getElementById('task-list');
+    taskListElement.innerHTML = '';
+    for (let x = 0; x<amount; x++) {
+        taskListElement.appendChild(createTaskElement(tasks[x]));
+    }
+    // tasks.forEach((task) => {
+    //   taskListElement.appendChild(createTaskElement(task));
+    // })
   });
 }
 

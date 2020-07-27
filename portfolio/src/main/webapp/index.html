@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body style="background-color:powderblue;" onload="loadTasks()">
+  <body style="background-color:powderblue;" onload="commentsSection()">
     <div id="content">
       <h1>My Portfolio</h1>
       <nav>
@@ -37,7 +37,7 @@
       </form>
       <hr>
       <label for="max-comments">How many comments would you like to view?:</label>
-      <select name="max-comments" id="max-comments" onchange="loadTasks(this.options[this.selectedIndex].value)">
+      <select name="max-comments" id="max-comments" onchange="commentsSection()">
         <option value="5" selected="selected">5</option>
         <option value="10">10</option>
         <option value="20">20</option>
