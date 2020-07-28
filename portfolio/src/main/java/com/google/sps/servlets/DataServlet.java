@@ -37,7 +37,7 @@ import java.util.List;
 
 
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that handles comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
   private ArrayList<Task> tasks;
@@ -51,7 +51,7 @@ public final class DataServlet extends HttpServlet {
     if (anonymous) {
         displayName = "Anonymous";
     }
-    
+
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("comment", comment);
     taskEntity.setProperty("displayName", displayName);
@@ -87,6 +87,7 @@ public final class DataServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(tasks));
+
   }
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {

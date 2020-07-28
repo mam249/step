@@ -51,7 +51,7 @@ async function loadTasks(amount) {
   });
 }
 
-/** Creates an element that represents a task,*/
+/** Creates an element that represents a task*/
 function createTaskElement(task) {
   const taskElement = document.createElement('li');
   taskElement.className = 'task';

@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@ package com.google.sps.data;
 
 
 public final class Task {
+  private final long id;
+  private final String comment;
+  private final String displayName;
+  private final long timestamp;
 
-    private final long id;
-    private final String comment;
-    private final String displayName;
-    private final long timestamp;
-
-    public Task(long id, String comment, String displayName, long timestamp) {
-        this.id = id;
-        this.comment = comment;
-        this.displayName = displayName;
-        this.timestamp = timestamp;
-    }
+  public Task(long id, String comment, String displayName, long timestamp) {
+    this.id = id;
+    this.comment = comment;
+    this.displayName = displayName;
+    this.timestamp = timestamp;
+  }
 }
