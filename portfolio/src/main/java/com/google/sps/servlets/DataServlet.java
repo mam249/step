@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import java.util.List;
 
 
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns some example content.*/
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
   private ArrayList<Task> tasks;
@@ -59,7 +59,7 @@ public final class DataServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(taskEntity);
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/login");
   }
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
