@@ -44,7 +44,7 @@ async function loadTasks(amount) {
     for (let x = 0; x < amount; x++) {
       taskListElement.appendChild(createTaskElement(tasks[x]));
     }
-    });
+  });
 }
 
 /** Creates an element that represents a task*/
