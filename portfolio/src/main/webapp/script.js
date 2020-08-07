@@ -41,7 +41,7 @@ async function loadTasks(amount) {
   fetch('/data').then(response => response.json()).then((tasks) => {
     taskListElement = document.getElementById('task-list');
     taskListElement.innerHTML = '';
-    for (let x = 0; x<amount; x++) {
+    for (let x = 0; x < amount; x++) {
       taskListElement.appendChild(createTaskElement(tasks[x]));
     }
     });
@@ -59,19 +59,3 @@ function createTaskElement(task) {
   taskElement.appendChild(titleElement);
   return taskElement;
 }
-
-// async function loggedIn(){
-//   const response = await fetch('/login');
-//   const loginInfo = response.json();
-//   const loginForm = document.getElementById('login-form');
-//   const commentForm = document.getElementById('comments-form');
-//   if (loginInfo.loginStatus) {
-//       loginForm.style.display = "none";
-//       commentForm.style.display = "block";
-//       document.getElementById('logout-url').href = loginInfo.logoutUrl;
-//   } else {
-//       loginForm.style.display = "block";
-//       commentForm.style.display = "none";
-//       document.getElementById('login-url').href = loginInfo.loginUrl;
-//   }
-// }
