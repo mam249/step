@@ -29,6 +29,7 @@ public final class FindMeetingQuery {
   private boolean potentialClash;
   private boolean potentialClashFlag;
   private boolean gapFlag;
+  
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     this.events = events;
     this.request = request;
