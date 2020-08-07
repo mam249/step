@@ -47,13 +47,14 @@ async function loadTasks(amount) {
     });
 }
 
-/** Creates an element that represents a task,*/
+/** Creates an element that represents a task*/
 function createTaskElement(task) {
   const taskElement = document.createElement('li');
   taskElement.className = 'task';
 
   const titleElement = document.createElement('span');
-  titleElement.innerText = task.comment + '\n - Commented by ' + task.displayName;
+
+  titleElement.innerText = task.comment + ' \n - Commented by ' + task.displayName;
 
   taskElement.appendChild(titleElement);
   return taskElement;

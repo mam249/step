@@ -37,7 +37,8 @@ import java.util.List;
 
 
 
-/** Servlet that returns some example content.*/
+
+/** Servlet that handles comments data */
 @WebServlet("/data")
 public final class DataServlet extends HttpServlet {
   private ArrayList<Task> tasks;
@@ -46,12 +47,8 @@ public final class DataServlet extends HttpServlet {
     String comment = request.getParameter("comment-box");
     String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
-    long timestamp = System.currentTimeMillis();
 
-    if (anonymous) {
-        displayName = "Anonymous";
-    }
-    
+    long timestamp = System.currentTimeMillis();    
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("comment", comment);
     taskEntity.setProperty("displayName", displayName);
@@ -87,6 +84,7 @@ public final class DataServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(tasks));
+
   }
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
