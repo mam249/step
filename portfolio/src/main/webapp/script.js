@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random image from the gallery to the page.
  */
 function addRandomImage() {
   const image_numbers = ['1692', '1710', '1740', '1741', '2938', '2940', '5317', '7953', '7954', '7983', '8105', '9292', '9303', '9377', '9378', '9380'];
 
 
-  // Pick a random greeting.
+  // Pick a random image.
   const image_number = image_numbers[Math.floor(Math.random() * image_numbers.length)];
   const image_url = "/images/IMG_" + image_number + ".jpg";
   // Add it to the page.
@@ -32,12 +32,22 @@ function addRandomImage() {
   imageContainer.appendChild(image_element);
 }
 
-function loadTasks() {
+function commentsSection(){
+    var amount = document.getElementById("max-comments").value;
+    loadTasks(amount);
+}
+
+async function loadTasks(amount) {
+
   fetch('/data').then(response => response.json()).then((tasks) => {
-    const taskListElement = document.getElementById('task-list');
-    tasks.forEach((task) => {
-      taskListElement.appendChild(createTaskElement(task));
-    })
+    taskListElement = document.getElementById('task-list');
+    taskListElement.innerHTML = '';
+    for (let x = 0; x<amount; x++) {
+        taskListElement.appendChild(createTaskElement(tasks[x]));
+    }
+    // tasks.forEach((task) => {
+    //   taskListElement.appendChild(createTaskElement(task));
+    // })
   });
 }
 
@@ -47,7 +57,7 @@ function createTaskElement(task) {
   taskElement.className = 'task';
 
   const titleElement = document.createElement('span');
-  titleElement.innerText = task.comment + ' \n - Commented by ' + task.displayName;
+  titleElement.innerText = task.comment + '\n - Commented by ' + task.displayName;
 
   taskElement.appendChild(titleElement);
   return taskElement;

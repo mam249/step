@@ -24,6 +24,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
+
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -31,6 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -43,7 +46,12 @@ public final class DataServlet extends HttpServlet {
     String comment = request.getParameter("comment-box");
     String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
-    long timestamp = System.currentTimeMillis();    
+    long timestamp = System.currentTimeMillis();
+
+    if (anonymous) {
+        displayName = "Anonymous";
+    }
+
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("comment", comment);
     taskEntity.setProperty("displayName", displayName);
@@ -56,14 +64,16 @@ public final class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+
+    FetchOptions options = FetchOptions.Builder.withLimit(100000);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+    List<Entity> results = datastore.prepare(query).asList(options);
     ArrayList<Task> tasks = new ArrayList<>();
     String comment = request.getParameter("comment-box");
     String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
-    long timestamp = System.currentTimeMillis();  
-    for (Entity entity : results.asIterable()) {
+    long timestamp = System.currentTimeMillis();
+    for (Entity entity : results) {
       long id = entity.getKey().getId();
       comment = (String) entity.getProperty("comment");
       displayName = (String) entity.getProperty("displayName");
@@ -71,8 +81,8 @@ public final class DataServlet extends HttpServlet {
 
       Task task = new Task(id, comment, displayName, timestamp);
       tasks.add(task);
-    
     }
+    
     Gson gson = new Gson();
 
     response.setContentType("application/json;");
