@@ -43,8 +43,12 @@ public final class DataServlet extends HttpServlet {
     String comment = request.getParameter("comment-box");
     String displayName = request.getParameter("display-name");
     boolean anonymous = Boolean.parseBoolean(getParameter(request, "anonymous", "false"));
+    long timestamp = System.currentTimeMillis();
 
-    long timestamp = System.currentTimeMillis();    
+    if (anonymous) {
+        displayName = "Anonymous";
+    }
+    
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("comment", comment);
     taskEntity.setProperty("displayName", displayName);

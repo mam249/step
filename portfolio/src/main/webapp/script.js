@@ -44,6 +44,7 @@ async function loadTasks(amount) {
     for (let x = 0; x < amount; x++) {
       taskListElement.appendChild(createTaskElement(tasks[x]));
     }
+
   });
 }
 
@@ -53,9 +54,7 @@ function createTaskElement(task) {
   taskElement.className = 'task';
 
   const titleElement = document.createElement('span');
-
   titleElement.innerText = task.comment + ' \n - Commented by ' + task.displayName;
-
   taskElement.appendChild(titleElement);
   return taskElement;
 }
