@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 
-
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,8 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 /** Servlet that handles comments data */
 @WebServlet("/data")
@@ -51,7 +48,7 @@ public final class DataServlet extends HttpServlet {
     if (anonymous) {
         displayName = "Anonymous";
     }
-
+    
     Entity taskEntity = new Entity("Task");
     taskEntity.setProperty("comment", comment);
     taskEntity.setProperty("displayName", displayName);
@@ -59,7 +56,7 @@ public final class DataServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(taskEntity);
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/login");
   }
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

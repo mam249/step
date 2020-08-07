@@ -38,16 +38,13 @@ function commentsSection(){
 }
 
 async function loadTasks(amount) {
-
   fetch('/data').then(response => response.json()).then((tasks) => {
     taskListElement = document.getElementById('task-list');
     taskListElement.innerHTML = '';
-    for (let x = 0; x<amount; x++) {
-        taskListElement.appendChild(createTaskElement(tasks[x]));
+    for (let x = 0; x < amount; x++) {
+      taskListElement.appendChild(createTaskElement(tasks[x]));
     }
-    // tasks.forEach((task) => {
-    //   taskListElement.appendChild(createTaskElement(task));
-    // })
+
   });
 }
 
@@ -57,8 +54,7 @@ function createTaskElement(task) {
   taskElement.className = 'task';
 
   const titleElement = document.createElement('span');
-  titleElement.innerText = task.comment + '\n - Commented by ' + task.displayName;
-
+  titleElement.innerText = task.comment + ' \n - Commented by ' + task.displayName;
   taskElement.appendChild(titleElement);
   return taskElement;
 }
